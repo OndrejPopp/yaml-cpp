@@ -21,6 +21,13 @@ template<typename Ex, typename... Args>
 YAML_CPP_NORETURN void YAML_throw(Args&&... args) {
 	throw Ex(std::forward<Args>(args)...);
 }
+#elif defined(YAML_CPP_HANDLE_WITH_RETURN)
+void handle_exception(const char* what);
+
+template<typename Ex, typename... Args>
+void YAML_throw(Args&&... args) {
+	handle_exception(Ex(std::forward<Args>(args)...).what());
+}
 #else
 YAML_CPP_NORETURN void handle_exception(const char* what);
 
